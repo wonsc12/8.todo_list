@@ -1,0 +1,17 @@
+body{
+  padding: 10px;
+}
+li{
+  list-style: none;
+  margin-bottom: 15px;
+}
+
+li input {
+  margin-right: 10px;
+}
+button {
+  white-space: nowrap;
+}
+.hidden {
+  display: none;
+}
