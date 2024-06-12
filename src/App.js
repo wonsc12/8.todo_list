@@ -1,6 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback} from 'react'
 import Todo from './Todo';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -14,7 +14,7 @@ function App() {
   const[todo,setTodo] = useState([]);
   let [todoid, setTodoid] = useState(0);
 
-  const getTodoList = ()=>{
+  const getTodoList = useCallback(()=>{
     const todoListFromStorage = window.localStorage.getItem('todo');
     console.log(todoListFromStorage);
     if(todoListFromStorage !== null && todoListFromStorage !=='[]'){ // 값이 있으면
@@ -23,7 +23,7 @@ function App() {
       setTodo(todoObj)
       setTodoid(todoObj[todoObj.length-1].id);
     } 
-  }
+  },[]);
   
 
   
@@ -68,19 +68,19 @@ function App() {
     document.querySelector('#todo').value = '';
   }
 
-  const setStroage = ()=>{
+  const setStroage = useCallback(()=>{
     const todoStr =  JSON.stringify(todo);
     window.localStorage.setItem('todo',todoStr);
-  }
+  },[todo]);
   useEffect(()=>{
     getTodoList();
     
-  },[]); // 최초 한번만 작동
+  },[getTodoList]); // 최초 한번만 작동
 
   useEffect(()=>{
    
     setStroage();
-  },[todo]); // 최초한번 실행, 변수명 todo변경되면 실행된다.
+  },[setStroage,todo]); // 최초한번 실행, 변수명 todo변경되면 실행된다.
 
   return (
     <div className="App">
